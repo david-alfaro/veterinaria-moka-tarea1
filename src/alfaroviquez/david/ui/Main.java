@@ -1,6 +1,8 @@
 package alfaroviquez.david.ui;
 
+import alfaroviquez.david.bl.Cita;
 import alfaroviquez.david.bl.Mascota;
+import alfaroviquez.david.bl.Reservacion;
 import alfaroviquez.david.bl.Usuario;
 import java.io.PrintStream;
 import java.util.Scanner;
@@ -11,7 +13,10 @@ public class Main {
     private static PrintStream output = new PrintStream(System.out);
     private static Usuario[] arregloUsuarios = new Usuario[50];
     private static Mascota[] arregloMascotas = new Mascota[50];
-
+    private static Cita[] arregloCitas = new Cita[50];
+    private static Reservacion[] arregloReservaciones = new Reservacion[50];
+    private static int nextCita = 0;
+    private static int nextReservacion = 0;
 
     public static void main(String[] args) {
         int opcion = 0;
@@ -45,8 +50,10 @@ public class Main {
                 registrarMascota();
                 break;
             case 3:
+                registrarCita();
                 break;
             case 4:
+                registrarReservacion();
                 break;
             case 5:
                 listarUsuarios();
@@ -55,8 +62,10 @@ public class Main {
                 listarMascota();
                 break;
             case 7:
+                listarCitas();
                 break;
             case 8:
+                listarReservaciones();
                 break;
             case 9:
                 break;
@@ -88,8 +97,8 @@ public class Main {
             if (arregloUsuarios[i] != null) {
                 if (arregloUsuarios[i].getCedula() == nuevoUsuario.getCedula()) {
                     output.println("El usuario ya existe en el sistema");
-                    arregloUsuarios[i]=null;
-                    
+                    arregloUsuarios[i] = null;
+
                 }
             } else {
                 arregloUsuarios[i] = nuevoUsuario;
@@ -98,13 +107,12 @@ public class Main {
 
             }
         }
-        
 
     }
 
     private static void listarUsuarios() {
         for (int i = 0; i < arregloUsuarios.length; i++) {
-            output.println("#" + (i + 1) + ": " + arregloUsuarios[i]);
+            output.println("# " + (i + 1) + ": " + arregloUsuarios[i]);
         }
     }
 
@@ -130,24 +138,62 @@ public class Main {
         output.println("Ranking de la mascota: ");
         int Ranking = input.nextInt();
         Mascota nuevaMascota = new Mascota(NombreMascota, NombreDuenno, Apellido1Duenno, Apellido2Duenno, CedulaDuenno, TelefonoDuenno, DireccionDuenno, FotoMascota, Observaciones, Ranking);
-        for(int i=0; i<arregloMascotas.length;i++){
-            if(arregloMascotas[i]!=null){
-                if(arregloMascotas[i].getNombreMascota().equals(nuevaMascota.getNombreMascota())){
+        for (int i = 0; i < arregloMascotas.length; i++) {
+            if (arregloMascotas[i] != null) {
+                if (arregloMascotas[i].getNombreMascota().equals(nuevaMascota.getNombreMascota())) {
                     output.println("La mascota ya existe en el sistema");
-                    arregloMascotas[i]=null;
+                    arregloMascotas[i] = null;
                 }
-            }else{
-                arregloMascotas[i]=nuevaMascota;
+            } else {
+                arregloMascotas[i] = nuevaMascota;
                 output.println("Se agrego la mascota de forma exitosa!");
                 break;
             }
         }
-        
+
     }
 
     private static void listarMascota() {
-        for(int i=0;i<arregloMascotas.length;i++){
-            output.println("#"+(i+1)+arregloMascotas[i]);
+        for (int i = 0; i < arregloMascotas.length; i++) {
+            output.println("# " + (i + 1) + arregloMascotas[i]);
         }
     }
+
+    private static void registrarCita() {
+        output.println("Nombre de Mascota: ");
+        String NombreMascota = input.next();
+        output.println("Fecha de la Cita: ");
+        String FechaCita = input.next();
+        output.println("Hora de la cita: ");
+        String HoraCita = input.next();
+        output.println("Observaciones de la mascota: ");
+        String Observaciones = input.next();
+        Cita nuevaCita = new Cita(NombreMascota, FechaCita, HoraCita, Observaciones);
+        arregloCitas[nextCita++] = nuevaCita;
+
+    }
+
+    private static void listarCitas() {
+        for (int i = 0; i < arregloCitas.length; i++) {
+            output.println("# "+(i+1)+arregloCitas[i]);
+        }
+    }
+
+    private static void registrarReservacion() {
+        output.println("Nombre de la mascota:");
+        String NombreMascota = input.next();
+        output.println("Fecha de entrada: ");
+        String FechaEntrada = input.next();
+        output.println("Fecha de salida: ");
+        String FechaSalida = input.next();
+        Reservacion nuevaReservacion = new Reservacion(NombreMascota,FechaEntrada,FechaSalida);
+        arregloReservaciones[nextReservacion++]=nuevaReservacion;
+    }
+
+    private static void listarReservaciones() {
+        for(int i=0;i<arregloReservaciones.length;i++){
+            output.println("# "+(i+1)+arregloReservaciones[i]);
+        }
+    }
+
 }
